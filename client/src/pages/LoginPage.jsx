@@ -1,10 +1,37 @@
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import dogImg from "/dog_main.png";
 import Footer from "../components/layout/Footer";
 import Input from "../components/Input";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import api from "../lib/api";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (data) => {
+    try {
+      await api.post("/api/v1/auth/login", data);
+      toast.success("Login successfull.");
+      setTimeout(() => {
+        navigate("/post");
+      }, 1200);
+    } catch (err) {
+      toast.error(err.response?.data.message || "Registration failed.");
+    }
+  };
+
   return (
     <div className="min-h-screen w-full bg-black grid place-items-center px-6">
       {/* layout */}
@@ -26,13 +53,50 @@ const LoginPage = () => {
           >
             PawPal
           </h1>
+          <form
+            className="flex flex-col justify-center items-center w-100"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            <Input
+              placeholder="Email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: "Invalid email address",
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
+            <Input
+              placeholder="Password"
+              type="password"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters",
+                },
+              })}
+            />
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
 
-          <Input placeholder="Email" />
-          <Input placeholder="Password" type="password" />
-
-          <button className="w-full h-12 mt-5 font-bold bg-blue-700 rounded">
-            Log in
-          </button>
+            <button
+              className="w-full h-12 mt-5 font-bold bg-blue-700 rounded"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Logging..." : "Log in"}
+            </button>
+          </form>
 
           <div className="flex items-center w-full my-6">
             <div className="h-px flex-1 bg-[#555555]" />
