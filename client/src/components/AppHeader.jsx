@@ -11,10 +11,10 @@ const AppHeader = () => {
           style={{ fontFamily: "'Baloo 2',cursive" }}
           onClick={() => navigate("/post")}
         >
-          PawPal 🐾
+          PawPal
         </div>
 
-        <nav className="flex items-center gap-8">
+        <nav className="flex items-center gap-20">
           <NavLink
             to="/post"
             className={({ isActive }) => {
@@ -43,7 +43,7 @@ const AppHeader = () => {
               }`;
             }}
           >
-            Q&A Community
+            Community
           </NavLink>
         </nav>
 
