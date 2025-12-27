@@ -1,23 +1,22 @@
 import AppHeader from "../components/AppHeader";
+import CreatePost from "../components/post/CreatePost";
 import PostCard from "../components/post/PostCard";
 import useInfinitePosts from "../hooks/useInfinitePosts";
 
 const PostPage = () => {
   const { posts, loaderRef, loading, hasMore } = useInfinitePosts();
-
+  console.log("posts", posts);
   return (
     <div className="min-h-screen bg-black text-white">
       <AppHeader />
-      <main className="pt-20 max-w-2xl mx-auto px-4">
+      <main className="pt-20 max-w-4xl mx-auto px-4">
         {/* create post */}
-        <div className="mb-6 p-4 bg-gray-900 rounded">
-          What’s your dog up to today?
-        </div>
+        <CreatePost />
 
         {/* post list */}
         <div className="flex flex-col gap-6">
           {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
+            <PostCard key={post._id} post={post} />
           ))}
         </div>
 

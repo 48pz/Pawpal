@@ -60,14 +60,22 @@ exports.login = async (req, res) => {
 
     logger.info("User logged in", { userId: user._id });
 
-    return res.status(200).json({
-      token,
-      user: {
-        id: user._id,
-        email: user.email,
-        username: user.username,
-      },
-    });
+    return res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .json({
+        message: "Login successful",
+        user: {
+          id: user._id,
+          email: user.email,
+          username: user.username,
+        },
+      });
   } catch (err) {
     logger.error("Login failed", { error: err.message });
     return res.status(500).json({ message: "Server error" });

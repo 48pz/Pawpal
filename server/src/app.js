@@ -1,11 +1,11 @@
 const express = require("express");
 const cors = require("cors");
 const apiRoutes = require("./routes");
-
+const cookieParser = require("cookie-parser");
 const app = express();
 
 app.use(express.json());
-
+app.use(cookieParser()  );
 //cors
 app.use(
   cors({
@@ -16,6 +16,7 @@ app.use(
 
 //routes
 app.use("/api", apiRoutes);
+
 
 //health check
 app.get("/health", (req, res) => {

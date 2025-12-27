@@ -17,8 +17,23 @@ const postSchema = new Schema(
     ],
 
     contentText: { type: String, required: true, trim: true, maxLength: 1000 },
-    images:[ { type: String }],
-    videoUrl: { type: String },
+
+    media: {
+      type: [
+        {
+          type: {
+            type: String,
+            enum: ["image", "video"],
+            required: true,
+          },
+          url: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+      default: [],
+    },
     likesCount: { type: Number, default: 0 },
     commentsCount: { type: Number, default: 0 },
   },

@@ -1,35 +1,39 @@
 import { useEffect, useRef, useState } from "react";
-import { mockPosts } from "../mock/posts";
-
+import api from "../lib/api";
 const PAGE_SIZE = 10;
 
 const useInfinitePosts = () => {
-  const [posts, setPosts] = useState(mockPosts.slice(0, PAGE_SIZE));
-  const [page, setPage] = useState(1);
+  const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const pageRef = useRef(1);
 
   const loaderRef = useRef(null);
-  const loadMore = () => {
+  const loadMore = async () => {
     if (loading || !hasMore) return;
     setLoading(true);
 
-    const start = pageRef.current * PAGE_SIZE;
-    const end = start + PAGE_SIZE;
+    try {
+      const res = await api.get("/api/v1/posts", {
+        params: {
+          page: pageRef.current,
+          limit: PAGE_SIZE,
+        },
+      });
 
-    const nextPosts = mockPosts.slice(start, end);
-
-    if (nextPosts.length === 0) {
-      setHasMore(false);
+      const { posts: newPosts, hasMore: more } = res.data;
+      if (newPosts.length === 0) {
+        setHasMore(false);
+      } else {
+        setPosts((prev) => [...prev, ...newPosts]);
+        pageRef.current += 1;
+        setHasMore(more);
+      }
+    } catch (err) {
+      console.error("Failed to load posts", err);
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setPosts((prev) => [...prev, ...nextPosts]);
-    pageRef.current += 1;
-    setPage(pageRef.current);
-    setLoading(false);
   };
 
   useEffect(() => {
