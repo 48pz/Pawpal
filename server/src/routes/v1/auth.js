@@ -9,5 +9,5 @@ const validate = require("../../middlewares/validate");
 const router = express.Router();
 router.post("/register", registerValidator, validate, authController.register);
 router.post("/login", loginValidator, validate, authController.login);
-
+router.post("/logout", authController.logout);
 module.exports = router;

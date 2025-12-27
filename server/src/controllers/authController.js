@@ -81,3 +81,14 @@ exports.login = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+exports.logout = (req, res) => {
+  res
+    .clearCookie("token", {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+    })
+    .status(200)
+    .json({ message: "Logged out successfully" });
+};

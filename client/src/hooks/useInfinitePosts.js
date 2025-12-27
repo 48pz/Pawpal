@@ -9,6 +9,13 @@ const useInfinitePosts = () => {
   const pageRef = useRef(1);
 
   const loaderRef = useRef(null);
+
+  const refreshPosts = async () => {
+    setPosts([]);
+    pageRef.current = 1;
+    setHasMore(true);
+    await loadMore();
+  };
   const loadMore = async () => {
     if (loading || !hasMore) return;
     setLoading(true);
@@ -59,6 +66,7 @@ const useInfinitePosts = () => {
     loaderRef,
     loading,
     hasMore,
+    refreshPosts,
   };
 };
 

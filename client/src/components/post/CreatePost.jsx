@@ -2,7 +2,7 @@ import { useState } from "react";
 import api from "../../lib/api";
 import toast from "react-hot-toast";
 
-const CreatePost = () => {
+const CreatePost = ({ onPostCreated }) => {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -16,6 +16,7 @@ const CreatePost = () => {
       });
       toast.success("Post created");
       setContent("");
+      onPostCreated?.();
     } catch (err) {
       console.error("Failed to create post", err);
       toast.error("Create post failed");
