@@ -5,6 +5,7 @@ import Footer from "../components/layout/Footer";
 import { useForm } from "react-hook-form";
 import api from "../lib/api";
 import toast from "react-hot-toast";
+import Button from "../components/Button";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -34,42 +35,35 @@ const RegisterPage = () => {
 
   return (
     <div className="bg-black w-full flex flex-col justify-center items-center min-h-screen gap-5">
+      {/* Logo */}
       <div>
         <Link
           to={"/"}
-          className="text-7xl  text-white"
+          className="text-7xl text-white"
           style={{ fontFamily: "'Baloo 2', cursive" }}
         >
           PawPal
         </Link>
       </div>
-      <button
-        className="
-        text-white 
-        flex 
-        items-center
-        gap-2 
-        justify-center
-        bg-blue-700 
-        px-4 
-        py-1
-        rounded
-        font-semibold 
-        hover:bg-[#365899] 
-        cursor-pointer 
-        w-100
-        h-12
-        transition"
+
+      {/* OAuth button */}
+      <Button
+        variant="secondary"
+        size="lg"
+        className="w-100 flex items-center justify-center gap-2"
       >
         <FcGoogle size={20} />
-        <span>Log in with Facebook</span>
-      </button>
+        <span>Log in with Google</span>
+      </Button>
+
+      {/* OR divider */}
       <div className="flex items-center w-100">
         <div className="h-px flex-1 bg-[#555555]" />
         <span className="text-[#555555] px-4 font-bold">OR</span>
         <div className="h-px flex-1 bg-[#555555]" />
       </div>
 
+      {/* Register form */}
       <form
         className="flex flex-col justify-center items-center w-100"
         onSubmit={handleSubmit(onSubmit)}
@@ -85,7 +79,9 @@ const RegisterPage = () => {
           })}
         />
         {errors.email && (
-          <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+          <p className="mt-1 text-xs text-red-400 text-left w-full">
+            {errors.email.message}
+          </p>
         )}
 
         <Input
@@ -100,7 +96,9 @@ const RegisterPage = () => {
           })}
         />
         {errors.password && (
-          <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+          <p className="mt-1 text-xs text-red-400 text-left w-full">
+            {errors.password.message}
+          </p>
         )}
 
         <Input
@@ -114,10 +112,13 @@ const RegisterPage = () => {
           })}
         />
         {errors.username && (
-          <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
+          <p className="mt-1 text-xs text-red-400 text-left w-full">
+            {errors.username.message}
+          </p>
         )}
 
-        <span className="text-white mt-5">
+        {/* Terms */}
+        <span className="text-white mt-5 text-sm text-center">
           By signing up, you agree to our
           <Link className="text-blue-500 hover:text-blue-400"> Terms</Link>,
           <Link className="text-blue-500 hover:text-blue-400">
@@ -132,30 +133,17 @@ const RegisterPage = () => {
           .
         </span>
 
-        <button
-          className="
-        text-slate-300
-        flex 
-        items-center
-        gap-2 
-        justify-center
-        bg-blue-700 
-        px-4 
-        py-1
-        rounded
-        font-bold 
-        hover:bg-[#365899] 
-        cursor-pointer 
-        w-100
-        h-12
-        transition
-        disabled:opacity-50"
+        {/* Submit button */}
+        <Button
           type="submit"
+          size="lg"
           disabled={isSubmitting}
+          className="w-100 mt-5"
         >
           {isSubmitting ? "Signing up..." : "Sign up"}
-        </button>
+        </Button>
       </form>
+
       <Footer />
     </div>
   );

@@ -13,7 +13,7 @@ exports.getPosts = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit + 1)
-      .populate("author", "username avatar");
+      .populate("author", "username avatarUrl");
 
     const hasMore = posts.length > limit;
     if (hasMore) {

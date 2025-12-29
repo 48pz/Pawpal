@@ -11,7 +11,7 @@ const PostPage = () => {
   return (
     <div className="min-h-screen bg-black text-white">
       <AppHeader />
-      <main className="pt-20 max-w-4xl mx-auto px-4">
+      <main className="pt-20 max-w-6xl mx-auto px-4">
         {/* create post */}
         <CreatePost onPostCreated={refreshPosts} />
         {/* post list */}

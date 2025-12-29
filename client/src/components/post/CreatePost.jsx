@@ -1,6 +1,7 @@
 import { useState } from "react";
 import api from "../../lib/api";
 import toast from "react-hot-toast";
+import Button from "../Button";
 
 const CreatePost = ({ onPostCreated }) => {
   const [content, setContent] = useState("");
@@ -36,13 +37,22 @@ const CreatePost = ({ onPostCreated }) => {
       />
 
       <div className="flex justify-end mt-3">
-        <button
+        {/* <button
           onClick={handleSubmit}
           disabled={loading}
           className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-2xl font-semibold text-sm disabled:opacity-50"
         >
           {loading ? "Posting..." : "Post"}
-        </button>
+        </button> */}
+
+        <Button
+          onClick={handleSubmit}
+          disabled={loading}
+          variant="primary"
+          size="lg"
+        >
+          {loading ? "Posting..." : "Post"}
+        </Button>
       </div>
     </div>
   );

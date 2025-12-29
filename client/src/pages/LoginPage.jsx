@@ -6,6 +6,7 @@ import Input from "../components/Input";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import api from "../lib/api";
+import Button from "../components/Button";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ const LoginPage = () => {
               })}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="mt-1 text-xs text-red-400 text-left w-full">
                 {errors.email.message}
               </p>
             )}
@@ -84,18 +85,27 @@ const LoginPage = () => {
               })}
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
+              <p className="mt-1 text-xs text-red-400 text-left w-full">
                 {errors.password.message}
               </p>
             )}
 
-            <button
+            {/* <button
               className="w-full h-12 mt-5 font-bold bg-blue-700 rounded"
               type="submit"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Logging..." : "Log in"}
-            </button>
+            </button> */}
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              size="lg"
+              className="w-full mt-5"
+            >
+              {" "}
+              {isSubmitting ? "Logging..." : "Log in"}
+            </Button>
           </form>
 
           <div className="flex items-center w-full my-6">
