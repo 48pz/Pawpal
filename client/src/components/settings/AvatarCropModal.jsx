@@ -1,7 +1,6 @@
 import Cropper from "react-easy-crop";
 import { useState } from "react";
 
-
 const AvatarCropModal = ({ open, onClose, onConfirm }) => {
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -18,8 +17,13 @@ const AvatarCropModal = ({ open, onClose, onConfirm }) => {
 
   const handleConfirm = async () => {
     if (!imageSrc || !croppedAreaPixels) return;
-    const blob = await getCroppedBlob(imageSrc, croppedAreaPixels);
-    onConfirm({ preview: imageSrc, blob });
+
+    const { blob, preview } = await getCroppedResult(
+      imageSrc,
+      croppedAreaPixels
+    );
+    onConfirm({ preview, blob });
+
     resetState();
     onClose();
   };
@@ -30,10 +34,13 @@ const AvatarCropModal = ({ open, onClose, onConfirm }) => {
     setZoom(1);
   };
 
-  const getCroppedBlob = async (imageSrc, cropPixels) => {
+  const getCroppedResult = async (imageSrc, cropPixels) => {
     const image = new Image();
     image.src = imageSrc;
-    await new Promise((resolve) => (image.onload = resolve));
+    await new Promise((resolve, reject) => {
+      image.onload = resolve;
+      image.onerror = reject;
+    });
 
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
@@ -53,9 +60,13 @@ const AvatarCropModal = ({ open, onClose, onConfirm }) => {
       cropPixels.height
     );
 
-    return new Promise((resolve) => {
-      canvas.toBlob((blob) => resolve(blob), "image/png");
+    const blob = await new Promise((resolve) => {
+      canvas.toBlob((b) => resolve(b), "image/png");
     });
+
+    const preview = canvas.toDataURL("image/png");
+
+    return { blob, preview };
   };
 
   if (!open) return null;
