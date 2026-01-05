@@ -34,7 +34,7 @@ exports.createDog = async (req, res) => {
       name: req.body.name,
       breed: req.body.breed,
       age: req.body.age,
-      avatarUrl, 
+      avatarUrl,
     });
 
     res.status(201).json({ dog });
@@ -66,12 +66,10 @@ exports.updateDog = async (req, res) => {
       folder: "dogs/avatars",
       filenamePrefix: `${dog._id}_`,
     });
-    console.log("👉 Firebase avatar url:", url);
     dog.avatarUrl = url;
   }
 
   await dog.save();
-  console.log("👉 After save avatarUrl:", dog.avatarUrl);
   res.json({ dog });
 };
 

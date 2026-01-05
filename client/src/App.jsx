@@ -4,6 +4,7 @@ import Register from "./pages/RegisterPage";
 import PostPage from "./pages/PostPage";
 import SettingsPage from "./pages/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
+import NotificationPage from "./pages/NotificationPage";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/post" element={<PostPage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/notifications" element={<NotificationPage />} />
       </Routes>
     </BrowserRouter>
   );

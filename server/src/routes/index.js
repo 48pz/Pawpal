@@ -5,6 +5,8 @@ const authRoutes = require("./v1/auth");
 const postRoutes = require("./v1/post");
 const userRoutes = require("./v1/user");
 const dogRoutes = require("./v1/dog");
+const notificationRoutes = require("./v1/notification");
+const commentRoutes = require("./v1/comment");
 
 // v1 - auth
 router.use("/v1/auth", authRoutes);
@@ -16,5 +18,9 @@ router.use("/v1/posts", postRoutes);
 router.use("/v1/user", userRoutes);
 
 router.use("/v1/dog", dogRoutes);
+
+router.use("/v1/notification", notificationRoutes);
+
+router.use("/v1/comments", commentRoutes);
 
 module.exports = router;

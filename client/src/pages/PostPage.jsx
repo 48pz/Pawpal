@@ -7,7 +7,6 @@ import Footer from "../components/layout/Footer";
 const PostPage = () => {
   const { posts, loaderRef, loading, hasMore, refreshPosts } =
     useInfinitePosts();
-  console.log("posts", posts);
   return (
     <div className="min-h-screen bg-black text-white">
       <AppHeader />

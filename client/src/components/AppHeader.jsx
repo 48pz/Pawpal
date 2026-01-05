@@ -10,6 +10,7 @@ const AppHeader = () => {
 
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const navItems = [
     { label: "Feed", to: "/post" },
@@ -24,6 +25,17 @@ const AppHeader = () => {
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  useEffect(() => {
+    api
+      .get("/api/v1/notification/unread-count")
+      .then((res) => {
+        setUnreadCount(res.data.count);
+      })
+      .catch((err) => {
+        console.error("unread-count failed", err);
+      });
   }, []);
 
   const handleLogout = async () => {
@@ -90,9 +102,14 @@ const AppHeader = () => {
                 hover:text-white hover:bg-white/5
                 transition
               "
+              onClick={() => {
+                navigate("/notifications");
+              }}
             >
               <AiOutlineMail size={20} />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full" />
+              )}
             </button>
 
             <button
