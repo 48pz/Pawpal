@@ -16,8 +16,8 @@ const LoginPage = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "yoyo@gmail.com",
+      password: "123456",
     },
   });
 
@@ -90,13 +90,7 @@ const LoginPage = () => {
               </p>
             )}
 
-            {/* <button
-              className="w-full h-12 mt-5 font-bold bg-blue-700 rounded"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? "Logging..." : "Log in"}
-            </button> */}
+          
             <Button
               type="submit"
               disabled={isSubmitting}

@@ -100,7 +100,7 @@ const AppHeader = () => {
                 relative p-2 rounded-full
                 text-gray-400
                 hover:text-white hover:bg-white/5
-                transition
+                transition cursor-pointer
               "
               onClick={() => {
                 navigate("/notifications");
@@ -119,7 +119,7 @@ const AppHeader = () => {
                 bg-linear-to-br from-blue-500 to-cyan-400
                 flex items-center justify-center
                 text-sm font-bold text-white
-                hover:opacity-90 transition
+                hover:opacity-90 transition cursor-pointer
               "
             >
               {user?.avatarUrl ? (

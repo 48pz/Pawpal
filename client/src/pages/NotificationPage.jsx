@@ -14,7 +14,7 @@ const NotificationPage = () => {
       setNotifications(res.data);
     });
 
-    api.post("/api/v1/notification/mark-read");
+    api.patch("/api/v1/notification/read-all").catch(() => {});
   }, []);
 
   const getNotificationText = (n) => {

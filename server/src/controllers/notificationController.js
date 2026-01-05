@@ -9,11 +9,6 @@ exports.getNotifications = async (req, res) => {
     .populate("sender", "username")
     .populate("post", "_id");
 
-  console.log(
-    "NOTIFICATIONS TYPES:",
-    notifications.map((n) => n.type)
-  );
-
   res.json(notifications);
 };
 
@@ -27,10 +22,20 @@ exports.getUnreadCount = async (req, res) => {
 };
 
 exports.markAllAsRead = async (req, res) => {
-  await Notification.updateMany(
-    { recipient: req.user._id, read: false },
-    { read: true }
-  );
+  try {
+    const userId = req.user.userId;
 
-  res.json({ success: true });
+    const result = await Notification.updateMany(
+      { recipient: userId, read: false },
+      { $set: { read: true } }
+    );
+
+    res.json({
+      success: true,
+      modifiedCount: result.modifiedCount,
+    });
+  } catch (err) {
+    console.error("markAllAsRead error:", err.message);
+    res.status(500).json({ message: "Failed to mark notifications as read" });
+  }
 };
