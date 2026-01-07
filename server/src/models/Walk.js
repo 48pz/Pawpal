@@ -27,8 +27,17 @@ const walkSchema = new Schema(
 
     participants: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "User",
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        dogs: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: "Dog",
+          },
+        ],
       },
     ],
 

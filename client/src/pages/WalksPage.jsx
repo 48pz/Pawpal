@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import AppHeader from "../components/AppHeader";
-import Footer from "../components/layout/Footer";
 import WalkCard from "../components/walks/WalkCard";
 import api from "../lib/api";
 
@@ -41,7 +40,7 @@ const WalksPage = () => {
             onClick={() => navigate("/walks/new")}
             className="rounded-xl bg-blue-500 hover:bg-blue-600 px-5 py-2 text-sm font-semibold"
           >
-            + Add Walk
+            Add Walk
           </button>
         </div>
 
@@ -57,7 +56,6 @@ const WalksPage = () => {
             ))}
           </div>
         )}
-
       </main>
     </div>
   );

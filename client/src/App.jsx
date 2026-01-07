@@ -7,6 +7,7 @@ import ProfilePage from "./pages/ProfilePage";
 import NotificationPage from "./pages/NotificationPage";
 import AddWalkPage from "./pages/AddWalkPage";
 import WalksPage from "./pages/WalksPage";
+import WalkDetailPage from "./pages/WalkDetailPage";
 function App() {
   return (
     <BrowserRouter>
@@ -19,6 +20,7 @@ function App() {
         <Route path="/notifications" element={<NotificationPage />} />
         <Route path="/walks" element={<WalksPage />} />
         <Route path="/walks/new" element={<AddWalkPage />} />
+        <Route path="/walks/:id" element={<WalkDetailPage />} />
       </Routes>
     </BrowserRouter>
   );

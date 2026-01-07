@@ -6,9 +6,9 @@ const bcrypt = require("bcrypt");
 
 exports.getMe = async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId).select(
-      "_id username email avatarUrl bio"
-    );
+    const user = await User.findById(req.user.userId)
+      .select("_id username email avatarUrl bio")
+      .populate("dogs");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

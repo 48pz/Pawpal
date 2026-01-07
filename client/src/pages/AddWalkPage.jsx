@@ -58,8 +58,8 @@ const AddWalkPage = () => {
     }
 
     const mp = Number(maxParticipants);
-    if (!Number.isFinite(mp) || mp < 1 || mp > 10) {
-      e.maxParticipants = "Max participants must be 1-10";
+    if (!Number.isFinite(mp) || mp < 1 || mp > 50) {
+      e.maxParticipants = "Max participants must be 1-50";
     }
 
     setErrors(e);
@@ -184,12 +184,12 @@ const AddWalkPage = () => {
               {/* Max participants */}
               <div>
                 <label className="block text-sm text-gray-300 mb-2">
-                  Max participants (1-10)
+                  Max participants (1-50)
                 </label>
                 <Input
                   type="number"
                   min={1}
-                  max={10}
+                  max={50}
                   value={maxParticipants}
                   onChange={(e) => setMaxParticipants(e.target.value)}
                   placeholder="5"
