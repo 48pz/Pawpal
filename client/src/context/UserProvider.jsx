@@ -22,7 +22,6 @@ const UserProvider = ({ children }) => {
     fetchMe();
   }, []);
   useEffect(() => {
-    console.log("[UserProvider] user changed:", user);
   }, [user]);
   const login = async (token) => {
     localStorage.setItem("token", token);
@@ -31,7 +30,6 @@ const UserProvider = ({ children }) => {
   };
 
   const logout = () => {
-    console.log("[UserProvider] logout called");
     localStorage.removeItem("token");
     setUser(null);
   };

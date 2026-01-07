@@ -10,6 +10,7 @@ import WalksPage from "./pages/WalksPage";
 import WalkDetailPage from "./pages/WalkDetailPage";
 import PawpediaPage from "./pages/PawpediaPage";
 import PawpediaDetailPage from "./pages/PawpediaDetailPage";
+import UserRelationListPage from "./pages/UserRelationListPage";
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +26,8 @@ function App() {
         <Route path="/walks/:id" element={<WalkDetailPage />} />
         <Route path="/pawpedia" element={<PawpediaPage />} />
         <Route path="/pawpedia/:slug" element={<PawpediaDetailPage />} />
+        <Route path="/profile/followers" element={<UserRelationListPage />} />
+        <Route path="/profile/followings" element={<UserRelationListPage />} />
       </Routes>
     </BrowserRouter>
   );

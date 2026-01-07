@@ -7,13 +7,24 @@ const bcrypt = require("bcrypt");
 exports.getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId)
-      .select("_id username email avatarUrl bio")
-      .populate("dogs");
+      .select("_id username email avatarUrl bio followers followings")
+      .populate("dogs", "name avatarUrl");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json({ user });
+    res.json({
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        avatarUrl: user.avatarUrl,
+        bio: user.bio,
+        dogs: user.dogs,
+        followersCount: user.followers?.length || 0,
+        followingsCount: user.followings?.length || 0,
+      },
+    });
   } catch (err) {
     logger.error("GetMe error", { error: err.message });
     res.status(500).json({ message: "GetME failed" });
@@ -101,3 +112,106 @@ exports.changePassword = asyncHandler(async (req, res) => {
     message: "Password updated successfully",
   });
 });
+
+exports.followUser = async (req, res) => {
+  try {
+    const me = req.user.userId;
+    const target = req.params.id;
+
+    if (me === target) {
+      return res.status(400).json({ message: "Cannot follow yourself" });
+    }
+
+    await User.findByIdAndUpdate(me, {
+      $addToSet: { followings: target },
+    });
+
+    await User.findByIdAndUpdate(target, {
+      $addToSet: { followers: me },
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    logger.error("Follow User error", { error: err.message });
+    res.status(500).json({ message: "Follow User error" });
+  }
+};
+
+exports.unfollowUser = async (req, res) => {
+  try {
+    const me = req.user.userId;
+    const target = req.params.id;
+
+    await User.findByIdAndUpdate(me, {
+      $pull: { followings: target },
+    });
+
+    await User.findByIdAndUpdate(target, {
+      $pull: { followers: me },
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    logger.error("Unfollow user error", { error: err.message });
+    res.status(500).json({ message: "Unfollow user error" });
+  }
+};
+
+exports.getUserHover = async (req, res) => {
+  try {
+    const target = await User.findById(req.params.id)
+      .populate("dogs", "name")
+      .select("username avatarUrl dogs followers followings");
+
+    if (!target) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isFollowing = target.followers.some(
+      (id) => id.toString() === req.user.userId
+    );
+
+    res.json({
+      user: {
+        _id: target._id,
+        username: target.username,
+        avatarUrl: target.avatarUrl,
+        dogs: target.dogs,
+        followersCount: target.followers.length,
+        followingsCount: target.followings.length,
+        isFollowing,
+      },
+    });
+  } catch (err) {
+    logger.error("GetUserHover error", { error: err.message });
+    res.status(500).json({ message: "GetUserHover error" });
+  }
+};
+
+exports.getFollowers = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).populate(
+      "followers",
+      "username avatarUrl"
+    );
+
+    res.json({ users: user.followers });
+  } catch (err) {
+    logger.error("GetFollowers error", { error: err.message });
+    res.status(500).json({ message: "GetFollowers error" });
+  }
+};
+
+exports.getFollowings = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).populate(
+      "followings",
+      "username avatarUrl"
+    );
+
+    res.json({ users: user.followings });
+  } catch (err) {
+    logger.error("GetFollowings error", { error: err.message });
+    res.status(500).json({ message: "GetFollowings error" });
+  }
+};

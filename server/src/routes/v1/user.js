@@ -8,7 +8,7 @@ const {
   changePasswordValidator,
 } = require("../../validators/userValidator");
 const validate = require("../../middlewares/validate");
-
+router.get("/me", auth, userController.getMe);
 router.put(
   "/me",
   auth,
@@ -17,7 +17,6 @@ router.put(
   upload.single("avatar"),
   userController.updateMe
 );
-router.get("/me", auth, userController.getMe);
 
 router.put(
   "/change-password",
@@ -26,4 +25,11 @@ router.put(
   validate,
   userController.changePassword
 );
+router.get("/:id/hover", auth, userController.getUserHover);
+router.post("/:id/follow", auth, userController.followUser);
+router.post("/:id/unfollow", auth, userController.unfollowUser);
+
+router.get("/:id/followers", auth, userController.getFollowers);
+router.get("/:id/followings", auth, userController.getFollowings);
+
 module.exports = router;

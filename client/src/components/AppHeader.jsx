@@ -9,7 +9,6 @@ const AppHeader = () => {
   const navigate = useNavigate();
   const { user, logout } = useUser();
   useEffect(() => {
-  console.log("[AppHeader] user changed:", user);
 }, [user]);
 
   const [open, setOpen] = useState(false);

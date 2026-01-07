@@ -4,10 +4,10 @@ import toast from "react-hot-toast";
 import Lightbox from "yet-another-react-lightbox";
 import Video from "yet-another-react-lightbox/plugins/video";
 import "yet-another-react-lightbox/styles.css";
-
 import api from "../../lib/api";
 import CommentSection from "./CommentSection";
 import { useUser } from "../../context/useUser";
+import UserHoverPopover from "../user/UserHoverPopover";
 
 const PostCard = ({ post, onDeleted }) => {
   const { user } = useUser();
@@ -23,6 +23,14 @@ const PostCard = ({ post, onDeleted }) => {
   const [liked, setLiked] = useState(!!post.isLiked);
   const [showComments, setShowComments] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  // popover state
+  const [popover, setPopover] = useState({
+    open: false,
+    x: 0,
+    y: 0,
+    userId: null,
+  });
 
   const isOwner = post.author?._id === user?._id;
 
@@ -76,27 +84,48 @@ const PostCard = ({ post, onDeleted }) => {
     }
   };
 
-
-  
   return (
     <div className="bg-[#0b1220] rounded-2xl border border-white/5 p-5">
       {/* header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
-            {post.author?.avatarUrl ? (
-              <img
-                src={post.author.avatarUrl}
-                alt={post.author.username}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span className="text-sm font-bold text-white">
-                {post.author?.username?.[0]?.toUpperCase() || "?"}
-              </span>
-            )}
-          </div>
+          {/* avatar (click to open popover) */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
 
+              const authorId =
+                typeof post.author === "string"
+                  ? post.author
+                  : post.author?._id;
+
+              if (!authorId) return;
+
+              setPopover({
+                open: true,
+                x: e.clientX,
+                y: e.clientY,
+                userId: authorId,
+              });
+            }}
+          >
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
+              {post.author?.avatarUrl ? (
+                <img
+                  src={post.author.avatarUrl}
+                  alt={post.author.username}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-sm font-bold text-white">
+                  {post.author?.username?.[0]?.toUpperCase() || "?"}
+                </span>
+              )}
+            </div>
+          </button>
+
+          {/* username + time */}
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-white">
               {post.author?.username}
@@ -107,18 +136,12 @@ const PostCard = ({ post, onDeleted }) => {
           </div>
         </div>
 
-        {/* delete button (owner only) */}
+        {/* delete button */}
         {isOwner && (
           <button
             onClick={handleDelete}
             disabled={deleting}
-            className="
-              text-xs
-              text-red-400
-              hover:text-red-300
-              transition
-              disabled:opacity-50
-            "
+            className="text-xs text-red-400 hover:text-red-300 transition disabled:opacity-50"
           >
             Delete
           </button>
@@ -227,6 +250,20 @@ const PostCard = ({ post, onDeleted }) => {
         index={index}
         slides={slides}
         plugins={[Video]}
+      />
+
+      {/* hover popover */}
+      <UserHoverPopover
+        open={popover.open}
+        x={popover.x}
+        y={popover.y}
+        userId={popover.userId}
+        onClose={() =>
+          setPopover((prev) => ({
+            ...prev,
+            open: false,
+          }))
+        }
       />
     </div>
   );
