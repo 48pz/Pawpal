@@ -8,6 +8,8 @@ import NotificationPage from "./pages/NotificationPage";
 import AddWalkPage from "./pages/AddWalkPage";
 import WalksPage from "./pages/WalksPage";
 import WalkDetailPage from "./pages/WalkDetailPage";
+import PawpediaPage from "./pages/PawpediaPage";
+import PawpediaDetailPage from "./pages/PawpediaDetailPage";
 function App() {
   return (
     <BrowserRouter>
@@ -21,6 +23,8 @@ function App() {
         <Route path="/walks" element={<WalksPage />} />
         <Route path="/walks/new" element={<AddWalkPage />} />
         <Route path="/walks/:id" element={<WalkDetailPage />} />
+        <Route path="/pawpedia" element={<PawpediaPage />} />
+        <Route path="/pawpedia/:slug" element={<PawpediaDetailPage />} />
       </Routes>
     </BrowserRouter>
   );

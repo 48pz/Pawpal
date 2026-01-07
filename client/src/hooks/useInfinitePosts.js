@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import api from "../lib/api";
+
 const PAGE_SIZE = 10;
 
 const useInfinitePosts = () => {
@@ -7,7 +8,6 @@ const useInfinitePosts = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const pageRef = useRef(1);
-
   const loaderRef = useRef(null);
 
   const refreshPosts = async () => {
@@ -16,6 +16,7 @@ const useInfinitePosts = () => {
     setHasMore(true);
     await loadMore();
   };
+
   const loadMore = async () => {
     if (loading || !hasMore) return;
     setLoading(true);
@@ -29,6 +30,7 @@ const useInfinitePosts = () => {
       });
 
       const { posts: newPosts, hasMore: more } = res.data;
+
       if (newPosts.length === 0) {
         setHasMore(false);
       } else {
@@ -43,8 +45,13 @@ const useInfinitePosts = () => {
     }
   };
 
+  const removePost = (postId) => {
+    setPosts((prev) => prev.filter((p) => p._id !== postId));
+  };
+
   useEffect(() => {
     if (!hasMore) return;
+
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting && !loading) {
         loadMore();
@@ -52,9 +59,7 @@ const useInfinitePosts = () => {
     });
 
     const current = loaderRef.current;
-    if (current) {
-      observer.observe(current);
-    }
+    if (current) observer.observe(current);
 
     return () => {
       if (current) observer.unobserve(current);
@@ -67,6 +72,7 @@ const useInfinitePosts = () => {
     loading,
     hasMore,
     refreshPosts,
+    removePost,
   };
 };
 

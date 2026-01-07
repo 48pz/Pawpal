@@ -7,8 +7,10 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import api from "../lib/api";
 import Button from "../components/Button";
+import { useUser } from "../context/useUser";
 
 const LoginPage = () => {
+  const { login } = useUser();
   const navigate = useNavigate();
   const {
     register,
@@ -23,13 +25,14 @@ const LoginPage = () => {
 
   const onSubmit = async (data) => {
     try {
-      await api.post("/api/v1/auth/login", data);
-      toast.success("Login successfull.");
-      setTimeout(() => {
-        navigate("/post");
-      }, 1200);
+      const res = await api.post("/api/v1/auth/login", data);
+      await login(res.data.token);
+
+      toast.success("Login successful.");
+
+      navigate("/post");
     } catch (err) {
-      toast.error(err.response?.data.message || "Registration failed.");
+      toast.error(err.response?.data?.message || "Login failed.");
     }
   };
 
@@ -90,7 +93,6 @@ const LoginPage = () => {
               </p>
             )}
 
-          
             <Button
               type="submit"
               disabled={isSubmitting}

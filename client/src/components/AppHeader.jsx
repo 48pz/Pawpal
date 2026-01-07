@@ -5,8 +5,12 @@ import api from "../lib/api";
 import { useUser } from "../context/useUser";
 
 const AppHeader = () => {
+  
   const navigate = useNavigate();
-  const { user } = useUser();
+  const { user, logout } = useUser();
+  useEffect(() => {
+  console.log("[AppHeader] user changed:", user);
+}, [user]);
 
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -39,7 +43,13 @@ const AppHeader = () => {
   }, []);
 
   const handleLogout = async () => {
-    await api.post("/api/v1/auth/logout");
+    try {
+      await api.post("/api/v1/auth/logout");
+    } catch (e) {
+      console.warn("logout api failed, force logout");
+    }
+
+    logout();
     setOpen(false);
     navigate("/");
   };

@@ -5,8 +5,9 @@ import useInfinitePosts from "../hooks/useInfinitePosts";
 import Footer from "../components/layout/Footer";
 
 const PostPage = () => {
-  const { posts, loaderRef, loading, hasMore, refreshPosts } =
+  const { posts, loaderRef, loading, hasMore, refreshPosts, removePost } =
     useInfinitePosts();
+
   return (
     <div className="min-h-screen bg-black text-white">
       <AppHeader />
@@ -16,7 +17,7 @@ const PostPage = () => {
         {/* post list */}
         <div className="flex flex-col gap-6">
           {posts.map((post) => (
-            <PostCard key={post._id} post={post} />
+            <PostCard key={post._id} post={post} onDeleted={removePost} />
           ))}
         </div>
         {hasMore && (

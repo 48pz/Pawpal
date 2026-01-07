@@ -8,6 +8,7 @@ const dogRoutes = require("./v1/dog");
 const notificationRoutes = require("./v1/notification");
 const commentRoutes = require("./v1/comment");
 const walkRoutes = require("./v1/walk");
+const pawpediaRoutes = require("./v1/pawpedia");
 
 // v1 - auth
 router.use("/v1/auth", authRoutes);
@@ -24,5 +25,6 @@ router.use("/v1/notification", notificationRoutes);
 
 router.use("/v1/comments", commentRoutes);
 router.use("/v1/walks", walkRoutes);
+router.use("/v1/pawpedia", pawpediaRoutes);
 
 module.exports = router;

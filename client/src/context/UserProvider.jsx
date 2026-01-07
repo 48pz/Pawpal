@@ -21,9 +21,32 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     fetchMe();
   }, []);
+  useEffect(() => {
+    console.log("[UserProvider] user changed:", user);
+  }, [user]);
+  const login = async (token) => {
+    localStorage.setItem("token", token);
+    setLoading(true);
+    await fetchMe();
+  };
+
+  const logout = () => {
+    console.log("[UserProvider] logout called");
+    localStorage.removeItem("token");
+    setUser(null);
+  };
 
   return (
-    <UserContext.Provider value={{ user, setUser, loading, fetchMe }}>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+        loading,
+        fetchMe,
+        login,
+        logout,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

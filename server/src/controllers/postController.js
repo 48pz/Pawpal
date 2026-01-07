@@ -134,7 +134,7 @@ exports.likePost = async (req, res) => {
         sender: userId,
         type: "like",
         post: post._id,
-      }); 
+      });
     }
     res.json({ likesCount: post.likesCount });
   } catch (err) {
@@ -171,5 +171,31 @@ exports.unlikePost = async (req, res) => {
   } catch (err) {
     console.error("unlikePost Error:", err);
     res.status(500).json({ message: "Unlike failed" });
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { postId } = req.params;
+
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (post.author.toString() !== userId) {
+      return res
+        .status(403)
+        .json({ message: "Not allowed to delete this post" });
+    }
+
+    await post.deleteOne();
+
+    res.json({ message: "Post deleted successfully" });
+  } catch (err) {
+    console.error("Delete post error:", err);
+    res.status(500).json({ message: "Server error" });
   }
 };

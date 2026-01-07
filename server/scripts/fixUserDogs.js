@@ -1,4 +1,3 @@
-// src/controllers/fixUserDogs.js
 require("dotenv").config({
   path: require("path").resolve(__dirname, "../../.env"),
 });
@@ -18,10 +17,9 @@ async function fixUserDogs() {
 
     for (const dog of dogs) {
       if (dog.owner) {
-        await User.findByIdAndUpdate(
-          dog.owner,
-          { $addToSet: { dogs: dog._id } }
-        );
+        await User.findByIdAndUpdate(dog.owner, {
+          $addToSet: { dogs: dog._id },
+        });
       }
     }
 

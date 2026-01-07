@@ -4,10 +4,14 @@ import toast from "react-hot-toast";
 import Lightbox from "yet-another-react-lightbox";
 import Video from "yet-another-react-lightbox/plugins/video";
 import "yet-another-react-lightbox/styles.css";
+
 import api from "../../lib/api";
 import CommentSection from "./CommentSection";
+import { useUser } from "../../context/useUser";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, onDeleted }) => {
+  const { user } = useUser();
+
   const media = post.media || [];
   const hasVideo = media.some((m) => m.type === "video");
   const images = media.filter((m) => m.type === "image");
@@ -18,6 +22,10 @@ const PostCard = ({ post }) => {
   const [liking, setLiking] = useState(false);
   const [liked, setLiked] = useState(!!post.isLiked);
   const [showComments, setShowComments] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  const isOwner = post.author?._id === user?._id;
+
   const slides = useMemo(
     () =>
       media.map((m) =>
@@ -46,38 +54,75 @@ const PostCard = ({ post }) => {
         setLiked(false);
       }
     } catch (err) {
-      toast.error(err.response?.data?.message || "Like failed");
+      toast.error(err.response?.data?.message || "Failed to update like");
     } finally {
       setLiking(false);
     }
   };
 
+  const handleDelete = async () => {
+    if (deleting) return;
+    if (!confirm("Are you sure you want to delete this post?")) return;
+
+    try {
+      setDeleting(true);
+      await api.delete(`/api/v1/posts/${post._id}`);
+      toast.success("Post deleted successfully");
+      onDeleted?.(post._id);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to delete post");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+
+  
   return (
     <div className="bg-[#0b1220] rounded-2xl border border-white/5 p-5">
       {/* header */}
-      <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
-          {post.author?.avatarUrl ? (
-            <img
-              src={post.author.avatarUrl}
-              alt={post.author.username}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <span className="text-sm font-bold text-white">
-              {post.author?.username?.[0]?.toUpperCase() || "?"}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-700 flex items-center justify-center">
+            {post.author?.avatarUrl ? (
+              <img
+                src={post.author.avatarUrl}
+                alt={post.author.username}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-sm font-bold text-white">
+                {post.author?.username?.[0]?.toUpperCase() || "?"}
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold text-white">
+              {post.author?.username}
             </span>
-          )}
+            <span className="text-xs text-gray-500">
+              {new Date(post.createdAt).toLocaleDateString()}
+            </span>
+          </div>
         </div>
 
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold text-white">
-            {post.author?.username}
-          </span>
-          <span className="text-xs text-gray-500">
-            {new Date(post.createdAt).toLocaleDateString()}
-          </span>
-        </div>
+        {/* delete button (owner only) */}
+        {isOwner && (
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            className="
+              text-xs
+              text-red-400
+              hover:text-red-300
+              transition
+              disabled:opacity-50
+            "
+          >
+            Delete
+          </button>
+        )}
       </div>
 
       {/* content */}
@@ -99,7 +144,7 @@ const PostCard = ({ post }) => {
         </div>
       )}
 
-      {/* video thumbnail */}
+      {/* video */}
       {hasVideo && (
         <div
           className="mb-4 rounded-xl overflow-hidden bg-black h-60 flex items-center justify-center cursor-pointer"
@@ -116,7 +161,7 @@ const PostCard = ({ post }) => {
         </div>
       )}
 
-      {/* image grid */}
+      {/* images */}
       {!hasVideo && images.length > 0 && (
         <div
           className={`mb-4 grid gap-2 ${
@@ -133,18 +178,7 @@ const PostCard = ({ post }) => {
                   setIndex(globalIndex);
                   setOpen(true);
                 }}
-                className="
-                  rounded-xl
-                  overflow-hidden
-                  bg-[#020617]
-                  h-45
-                  flex
-                  items-center
-                  justify-center
-                  cursor-pointer
-                  hover:opacity-90
-                  transition
-                "
+                className="rounded-xl overflow-hidden bg-[#020617] h-45 flex items-center justify-center cursor-pointer hover:opacity-90 transition"
               >
                 <img
                   src={img.url}
@@ -167,7 +201,7 @@ const PostCard = ({ post }) => {
           {liked ? (
             <AiFillHeart size={18} className="text-red-500" />
           ) : (
-            <AiOutlineHeart size={18} className="text-gray-400" />
+            <AiOutlineHeart size={18} />
           )}
           <span className="text-xs">{likes}</span>
         </button>
@@ -180,6 +214,7 @@ const PostCard = ({ post }) => {
           <span className="text-xs">{post.commentsCount || 0}</span>
         </button>
       </div>
+
       {showComments && (
         <div className="mt-4">
           <CommentSection postId={post._id} />
