@@ -4,19 +4,21 @@ const apiRoutes = require("./routes");
 const cookieParser = require("cookie-parser");
 const app = express();
 
-app.use(express.json());
-app.use(cookieParser()  );
 //cors
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+
+//body and cookie
+app.use(express.json());
+app.use(cookieParser());
 
 //routes
 app.use("/api", apiRoutes);
-
 
 //health check
 app.get("/health", (req, res) => {
