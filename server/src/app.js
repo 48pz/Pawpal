@@ -11,7 +11,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 
 //body and cookie
 app.use(express.json());
