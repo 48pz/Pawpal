@@ -12,6 +12,7 @@ import { useUser } from "../context/useUser";
 const LoginPage = () => {
   const { login } = useUser();
   const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -27,9 +28,10 @@ const LoginPage = () => {
     try {
       const res = await api.post("/api/v1/auth/login", data);
       const { token, user } = res.data;
-      localStorage.setItem("token", token);
 
-      login({ token, user });
+      localStorage.setItem("token", token);
+      login(token);
+
       toast.success("Login successful.");
       navigate("/post");
     } catch (err) {
@@ -38,29 +40,30 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-black grid place-items-center px-6">
-      {/* layout */}
-      <div className="flex flex-col lg:flex-row items-center gap-16 w-full max-w-5xl">
-        {/* desktop */}
-        <div className="hidden lg:flex w-200 h-130 rounded-3xl bg-[#111] shadow-lg">
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center px-6">
+      {/* main container */}
+      <div className="flex flex-col lg:flex-row items-center gap-12 w-full max-w-5xl">
+        {/* left image - desktop only */}
+        <div className="hidden lg:flex w-105 h-130 rounded-3xl bg-[#111] shadow-lg overflow-hidden">
           <img
             src={dogImg}
             alt="Dog main"
-            className="w-full h-full object-cover rounded-2xl"
+            className="w-full h-full object-cover"
           />
         </div>
 
         {/* login form */}
         <div className="w-full max-w-sm flex flex-col items-center text-center text-white">
           <h1
-            className="text-7xl mb-6"
+            className="text-5xl sm:text-6xl lg:text-7xl mb-6"
             style={{ fontFamily: "'Baloo 2', cursive" }}
           >
             PawPal
           </h1>
+
           <form
-            className="flex flex-col justify-center items-center w-100"
             onSubmit={handleSubmit(onSubmit)}
+            className="w-full flex flex-col items-center"
           >
             <Input
               placeholder="Email"
@@ -77,6 +80,7 @@ const LoginPage = () => {
                 {errors.email.message}
               </p>
             )}
+
             <Input
               placeholder="Password"
               type="password"
@@ -100,17 +104,18 @@ const LoginPage = () => {
               size="lg"
               className="w-full mt-5"
             >
-              {" "}
               {isSubmitting ? "Logging..." : "Log in"}
             </Button>
           </form>
 
+          {/* divider */}
           <div className="flex items-center w-full my-6">
-            <div className="h-px flex-1 bg-[#555555]" />
-            <span className="text-[#555555] px-4">OR</span>
-            <div className="h-px flex-1 bg-[#555555]" />
+            <div className="h-px flex-1 bg-[#555]" />
+            <span className="text-[#555] px-4">OR</span>
+            <div className="h-px flex-1 bg-[#555]" />
           </div>
 
+          {/* google login */}
           <div className="flex items-center gap-2">
             <FcGoogle size={20} />
             <Link to="/" className="text-blue-500 font-medium">
@@ -130,6 +135,8 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+
+      {/* footer */}
       <Footer />
     </div>
   );
