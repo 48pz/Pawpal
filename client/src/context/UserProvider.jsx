@@ -21,10 +21,8 @@ const UserProvider = ({ children }) => {
   useEffect(() => {
     fetchMe();
   }, []);
-  useEffect(() => {
-  }, [user]);
-  const login = async (token) => {
-    localStorage.setItem("token", token);
+  useEffect(() => {}, [user]);
+  const login = async () => {
     setLoading(true);
     await fetchMe();
   };

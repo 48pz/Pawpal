@@ -26,10 +26,11 @@ const LoginPage = () => {
   const onSubmit = async (data) => {
     try {
       const res = await api.post("/api/v1/auth/login", data);
-      await login(res.data.token);
+      const { token, user } = res.data;
+      localStorage.setItem("token", token);
 
+      login({ token, user });
       toast.success("Login successful.");
-
       navigate("/post");
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed.");
