@@ -67,11 +67,10 @@ const AppHeader = () => {
 
       <header
         className="
-    fixed left-0 right-0 z-50
-    bg-black/80 backdrop-blur
-    border-b border-white/5
-    pt-[env(safe-area-inset-top)]
-  "
+        fixed left-0 right-0 z-50
+       bg-black/80 backdrop-blur
+        border-b border-white/5
+        pt-[env(safe-area-inset-top)]"
       >
         <div className="relative max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div
@@ -82,7 +81,7 @@ const AppHeader = () => {
             PawPal
           </div>
 
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="flex items-center gap-4">
             {navItems.map((item) => (
               <NavLink
                 key={item.to}
