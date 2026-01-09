@@ -31,14 +31,21 @@ const WalksPage = () => {
 
       <main className="pt-20 max-w-6xl mx-auto px-4">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-5xl" style={{ fontFamily: "'Baloo 2', cursive" }}>
+        <div className="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
+          <h1
+            className="text-3xl md:text-5xl"
+            style={{ fontFamily: "'Baloo 2', cursive" }}
+          >
             Walks
           </h1>
 
           <button
             onClick={() => navigate("/walks/new")}
-            className="rounded-xl bg-blue-500 hover:bg-blue-600 px-5 py-2 text-sm font-semibold"
+            className="w-full md:w-auto
+            rounded-xl
+           bg-blue-500 hover:bg-blue-600
+            px-5 py-2
+            text-sm font-semibold"
           >
             Add Walk
           </button>
