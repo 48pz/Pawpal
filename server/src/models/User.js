@@ -17,7 +17,24 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true,
     },
-    passwordHash: { type: String, required: true },
+    // passwordHash: { type: String, required: true },
+    passwordHash: {
+      type: String,
+      required: function () {
+        return this.provider === "local";
+      },
+    },
+
+    provider: {
+      type: String,
+      enum: ["local", "google"],
+      default: "local",
+      required: true,
+    },
+
+    googleId: {
+      type: String,
+    },
     bio: { type: String, default: "", maxLength: 100 },
     avatarUrl: { type: String },
     dogs: [

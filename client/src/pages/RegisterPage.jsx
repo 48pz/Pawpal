@@ -51,6 +51,10 @@ const RegisterPage = () => {
         variant="secondary"
         size="lg"
         className="w-100 flex items-center justify-center gap-2"
+        onClick={() => {
+          window.location.href =
+            import.meta.env.VITE_API_BASE_URL + "/api/v1/auth/google";
+        }}
       >
         <FcGoogle size={20} />
         <span>Log in with Google</span>

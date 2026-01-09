@@ -11,6 +11,7 @@ import WalkDetailPage from "./pages/WalkDetailPage";
 import PawpediaPage from "./pages/PawpediaPage";
 import PawpediaDetailPage from "./pages/PawpediaDetailPage";
 import UserRelationListPage from "./pages/UserRelationListPage";
+import OAuthSuccessPage from "./pages/OAuthSuccessPage";
 function App() {
   return (
     <BrowserRouter>
@@ -28,6 +29,7 @@ function App() {
         <Route path="/pawpedia/:slug" element={<PawpediaDetailPage />} />
         <Route path="/profile/followers" element={<UserRelationListPage />} />
         <Route path="/profile/followings" element={<UserRelationListPage />} />
+        <Route path="/oauth-success" element={<OAuthSuccessPage />} />
       </Routes>
     </BrowserRouter>
   );

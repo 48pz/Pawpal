@@ -10,15 +10,17 @@ const corsOptions = {
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "https://pawpal-swart.vercel.app",
-  ]
+  ],
 };
+const passport = require("passport");
+require("./config/passport");
 
 app.use(cors(corsOptions));
 
 //body and cookie
 app.use(express.json());
 app.use(cookieParser());
-
+app.use(passport.initialize());
 //routes
 app.use("/api", apiRoutes);
 

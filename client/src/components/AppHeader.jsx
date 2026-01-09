@@ -5,11 +5,9 @@ import api from "../lib/api";
 import { useUser } from "../context/useUser";
 
 const AppHeader = () => {
-  
   const navigate = useNavigate();
   const { user, logout } = useUser();
-  useEffect(() => {
-}, [user]);
+  useEffect(() => {}, [user]);
 
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -67,7 +65,14 @@ const AppHeader = () => {
         />
       )}
 
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur border-b border-white/5">
+      <header
+        className="
+    fixed left-0 right-0 z-50
+    bg-black/80 backdrop-blur
+    border-b border-white/5
+    pt-[env(safe-area-inset-top)]
+  "
+      >
         <div className="relative max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div
             className="text-xl font-bold text-white cursor-pointer"

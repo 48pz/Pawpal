@@ -116,11 +116,19 @@ const LoginPage = () => {
           </div>
 
           {/* google login */}
-          <div className="flex items-center gap-2">
+          <div
+            onClick={() => {
+              window.location.href =
+                import.meta.env.VITE_API_BASE_URL + "/api/v1/auth/google";
+            }}
+            className="
+            flex items-center gap-2 cursor-pointer
+            hover:opacity-80 transition"
+          >
             <FcGoogle size={20} />
-            <Link to="/" className="text-blue-500 font-medium">
+            <span className="text-blue-500 font-medium">
               Log in with Google
-            </Link>
+            </span>
           </div>
 
           <Link to="/" className="mt-5 text-sm text-gray-300 hover:text-white">
