@@ -91,34 +91,36 @@ const WalkCard = ({ walk }) => {
   return (
     <div
       className="
-      bg-gradient-to-br from-[#121826] to-[#0b0f1a]
+      bg-linear-to-br from-[#121826] to-[#0b0f1a]
       border border-white/10
       rounded-3xl
       p-6
       shadow-lg
       hover:border-blue-500/30
       transition
+      overflow-hidden
     "
     >
       {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="space-y-1">
+      <div className="flex items-start gap-3 mb-4">
+        {/* Left */}
+        <div className="flex-1 min-w-0 space-y-1">
           <p className="text-sm text-blue-300">📅 {timeText}</p>
-          <p className="text-sm text-gray-400 truncate max-w-[80%]">
+          <p className="text-sm text-gray-400 truncate">
             📍 {walk.location?.name}
           </p>
         </div>
 
-        {/* Capacity */}
+        {/* Right */}
         <div
           className="
+          shrink-0
           px-3 py-1
           rounded-full
           text-xs
-          bg-blue-500/10
-          text-blue-300
-          border border-blue-500/20
-        "
+         bg-blue-500/10
+         text-blue-300
+          border border-blue-500/20"
         >
           {walk.participants.length}/{walk.maxParticipants}
         </div>

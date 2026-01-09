@@ -29,7 +29,7 @@ const WalksPage = () => {
     <div className="min-h-screen bg-black text-white">
       <AppHeader />
 
-      <main className="pt-20 max-w-6xl mx-auto px-4 overflow-x-hidden">
+      <main className="pt-20 max-w-6xl mx-auto px-4" >
         {/* Header */}
         <div className="flex flex-col gap-4 mb-6 md:flex-row md:items-center md:justify-between">
           <h1
